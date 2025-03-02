@@ -1,7 +1,6 @@
 const page = () => {
   return (
-    <main className="h-[2000px]">
-    </main>
+    <div>page</div>
   )
 }
 

@@ -1,10 +1,18 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useAuth } from "@clerk/nextjs";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
+import { ArrowRight } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
+  const pathname = usePathname();
+  const { isSignedIn } = useAuth();
+
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -31,10 +39,22 @@ const Header = () => {
       )}
     >
       <div className="px-8 flex h-16 items-center justify-between max-w-[88rem] mx-auto">
-        <div className="flex items-center text-2xl gap-2">
+        <Link href="/" className="flex items-center text-2xl gap-2">
           <Image src="/logo.png" alt="logo" width={48} height={48} />
           LearnLink
-        </div>
+        </Link>
+        {!pathname.includes("sign-in") &&
+          (isSignedIn ? (
+            <Link href="/dashboard">
+              <Button>
+                Dashboard <ArrowRight />
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/sign-in">
+              <Button>Sign In</Button>
+            </Link>
+          ))}
       </div>
     </header>
   );
