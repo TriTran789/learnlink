@@ -19,11 +19,11 @@ model User {
   firstame     String?
   lastname     String?
   createdAt    DateTime       @default(now())
-  clerkid      String
+  clerkid      String         @unique
   image        String?
   classes      Class[]
   subscription Subscription?
-  Notification Notification[]
+  notification Notification[]
   member       Member[]
   result       Result[]
 }

@@ -18,9 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className="hide-scrollbar">
         <body
-          className={`${merriweather  .className} min-h-screen flex w-full flex-col bg-black text-white antialiased`}
+          className={`${merriweather.className} min-h-screen flex w-full flex-col bg-black text-white antialiased`}
         >
           <Header />
           {children}
