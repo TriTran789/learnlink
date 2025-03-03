@@ -37,7 +37,9 @@ const Header = () => {
       try {
         const result = await getAvatar();
         setAvatar(result);
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
     loadAvatar();
   }, []);
