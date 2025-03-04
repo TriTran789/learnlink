@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Merriweather_Sans } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import Header from "@/components/Header";
 
 const merriweather = Merriweather_Sans({ subsets: ["latin"] });
 
@@ -22,7 +21,6 @@ export default function RootLayout({
         <body
           className={`${merriweather.className} min-h-screen flex w-full flex-col bg-black text-white antialiased`}
         >
-          <Header />
           {children}
         </body>
       </html>
