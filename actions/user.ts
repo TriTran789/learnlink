@@ -41,17 +41,13 @@ export const onAuthenticateUser = async () => {
 };
 
 export const getAvatar = async () => {
-  try {
-    const user = await currentUser();
+  const user = await currentUser();
 
-    return {
-      image: user?.imageUrl,
-      lastname: user?.lastName,
-      firstname: user?.firstName,
-    };
-  } catch (error) {
-    return { status: 500 };
-  }
+  return {
+    image: user?.imageUrl,
+    lastname: user?.lastName,
+    firstname: user?.firstName,
+  };
 };
 
 export const getSubscription = async () => {
