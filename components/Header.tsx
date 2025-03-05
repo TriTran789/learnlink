@@ -113,7 +113,7 @@ const Header = () => {
                   Sign Out
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> 
           </div>
         ) : (
           !pathname.includes("sign-in") && (

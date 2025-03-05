@@ -17,8 +17,6 @@ export const onAuthenticateUser = async () => {
       },
     });
 
-    console.log(userExist);
-
     if (userExist) {
       return { status: 200, data: userExist };
     }
@@ -43,11 +41,41 @@ export const onAuthenticateUser = async () => {
 };
 
 export const getAvatar = async () => {
-  const user = await currentUser();
+  try {
+    const user = await currentUser();
 
-  return {
-    image: user?.imageUrl,
-    lastname: user?.lastName,
-    firstname: user?.firstName,
-  };
+    return {
+      image: user?.imageUrl,
+      lastname: user?.lastName,
+      firstname: user?.firstName,
+    };
+  } catch (error) {
+    return { status: 500 };
+  }
+};
+
+export const getSubscription = async () => {
+  try {
+    const user = await currentUser();
+
+    if (!user) {
+      return { status: 403 };
+    }
+
+    const subscription = await client.user.findFirst({
+      where: {
+        clerkid: user.id,
+      },
+      select: {
+        subscription: true,
+      },
+    });
+
+    if (subscription) {
+      return { status: 200, data: subscription };
+    }
+    return { status: 400 };
+  } catch (error) {
+    return { status: 500 };
+  }
 };
