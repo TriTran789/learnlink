@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { GraduationCap, School, SquareChartGantt, Webhook } from "lucide-react";
 

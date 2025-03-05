@@ -5,6 +5,7 @@ const layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="w-full h-screen flex">
       <DashboardSidebar />
+      {children}
     </div>
   );
 };
