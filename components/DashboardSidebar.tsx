@@ -52,7 +52,7 @@ export function SidebarDemo() {
   ];
 
   const router = useRouter();
-  const { isSignedIn, signOut } = useAuth();
+  const { signOut } = useAuth();
 
   const [open, setOpen] = useState(false);
   const [avatar, setAvatar] = useState<{
