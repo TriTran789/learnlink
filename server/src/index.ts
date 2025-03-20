@@ -14,6 +14,10 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
+app.get("/health", async (req: Request, res: Response) => {
+  res.send({ message: "health Ok!" });
+});
+
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Hello World" });
 });
