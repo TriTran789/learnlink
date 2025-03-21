@@ -3,6 +3,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import "dotenv/config";
 import mongoose from "mongoose";
+import userRoute from "./routes/user.route";
+import authRoute from "./routes/auth.route";
 
 mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING as string)
@@ -11,16 +13,19 @@ mongoose
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173"],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(cookieParser());
 
 app.get("/health", async (req: Request, res: Response) => {
   res.send({ message: "health Ok!" });
 });
 
-app.get("/", (req: Request, res: Response) => {
-  res.json({ message: "Hello World" });
-});
+app.use("/api/user", userRoute);
+app.use("/api/auth", authRoute);
 
 app.listen(7000, () => {
   console.log("Server is running on port 7000");

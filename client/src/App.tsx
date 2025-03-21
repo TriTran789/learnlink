@@ -1,11 +1,35 @@
-import { Button } from "@/components/ui/button";
+import { Navigate, useRoutes } from "react-router-dom";
+import PATH from "@/contants/Path";
+import HomePage from "@/pages/HomePage";
+import SignInPage from "@/pages/SignInPage";
+import DashboardPage from "@/pages/DashboardPage";
+import DashboardLayout from "./layouts/DashboardLayout";
 
-function App() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-svh">
-      <Button>Click me</Button>
-    </div>
-  );
-}
+const App = () => {
+  return useRoutes([
+    {
+      path: PATH.HOME,
+      element: <HomePage />,
+    },
+    {
+      path: PATH.SIGN_IN,
+      element: <SignInPage />,
+    },
+    {
+      path: PATH.DASHBOARD,
+      element: <DashboardLayout />,
+      children: [
+        {
+          index: true,
+          element: <DashboardPage />,
+        },
+      ],
+    },
+    {
+      path: "*",
+      element: <Navigate to={PATH.HOME} />,
+    },
+  ]);
+};
 
 export default App;
