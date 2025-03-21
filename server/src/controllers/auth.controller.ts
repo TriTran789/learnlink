@@ -68,6 +68,7 @@ const logout = async (req: Request, res: Response) => {
 
 const refreshToken = async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refreshToken;
+  console.log(refreshToken);
   if (!refreshToken) {
     res.status(401).json({ success: false, message: "Unauthenticated" });
     return;
