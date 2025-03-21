@@ -39,6 +39,7 @@ const SignInPage = () => {
     onSuccess: (data) => {
       toast.success(data.message);
       setAccessToken(data.accessToken);
+      localStorage.setItem("accessToken", data.accessToken);
       console.log("set access token", data.accessToken);
       navigate(PATH.HOME);
     },
