@@ -46,10 +46,15 @@ export const checkAuthStatus = async (): Promise<{
   accessToken: string;
 }> => {
   try {
-    const response = await apiClient.post(
+    const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/auth/refresh-token`,
       {},
-      { withCredentials: true }
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
     );
     const newAccessToken = response.data.accessToken;
     localStorage.setItem("accessToken", newAccessToken);
