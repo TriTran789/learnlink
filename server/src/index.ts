@@ -18,6 +18,7 @@ app.use(
     origin: "https://learnlink-beige.vercel.app/",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(cookieParser());
