@@ -46,7 +46,7 @@ export const checkAuthStatus = async (): Promise<{
   accessToken: string;
 }> => {
   try {
-    const response = await axios.post(
+    const response = await apiClient.post(
       `${import.meta.env.VITE_BASE_URL}/auth/refresh-token`,
       {},
       { withCredentials: true }
@@ -56,7 +56,7 @@ export const checkAuthStatus = async (): Promise<{
     return response.data;
   } catch (error) {
     console.error("Không thể làm mới token:", error);
-    // localStorage.removeItem("accessToken");
+    localStorage.removeItem("accessToken");
     throw error;
   }
 };
