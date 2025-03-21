@@ -56,7 +56,7 @@ export const checkAuthStatus = async (): Promise<{
     return response.data;
   } catch (error) {
     console.error("Không thể làm mới token:", error);
-    localStorage.removeItem("accessToken");
+    // localStorage.removeItem("accessToken");
     throw error;
   }
 };
