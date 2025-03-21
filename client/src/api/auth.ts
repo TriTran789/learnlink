@@ -1,5 +1,6 @@
 import axios from "axios";
 import apiClient from "./apiClient";
+import { setAccessToken } from "@/lib/localStorage";
 
 export const signInApi = async (payload: {
   email: string;
@@ -10,6 +11,7 @@ export const signInApi = async (payload: {
 }> => {
   try {
     const response = await apiClient.post("/auth/sign-in", payload);
+    setAccessToken(response.data.accessToken);
     return response.data.data;
   } catch (error: any) {
     console.error("Đăng nhập không thành công:", error);
