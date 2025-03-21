@@ -11,23 +11,12 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
-const allowedOrigins = [
-  "https://learnlink-beige.vercel.app",
-  "http://localhost:5173", // Cho môi trường dev
-];
-
 const app = express();
 app.use(express.json());
 app.use(
   cors({
-    // origin: "https://learnlink-beige.vercel.app",
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, origin);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: "https://learnlink-beige.vercel.app",
+    // origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
