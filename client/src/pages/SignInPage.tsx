@@ -25,6 +25,7 @@ import { setAccessToken } from "@/lib/localStorage";
 import { useNavigate } from "react-router-dom";
 import PATH from "@/contants/Path";
 import { toast } from "sonner";
+import InputPassword from "@/components/InputPassword";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -98,7 +99,7 @@ const SignInPage = () => {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input placeholder="password" {...field} />
+                        <InputPassword field={field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
