@@ -1,5 +1,6 @@
 import { refreshAccessToken } from "@/api/auth";
 import Loading from "@/components/Loading";
+import MySidebar from "@/components/MySidebar";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -17,11 +18,18 @@ const DashboardLayout = () => {
   return (
     <main
       className={cn(
-        "min-h-screen w-full bg-black flex",
+        "min-h-screen w-full bg-black flex md:flex-row flex-col",
         isPending ? "flex-col" : ""
       )}
     >
-      {isPending ? <Loading /> : <Outlet />}
+      {isPending ? (
+        <Loading />
+      ) : (
+        <>
+          <MySidebar />
+          <Outlet />
+        </>
+      )}
     </main>
   );
 };
