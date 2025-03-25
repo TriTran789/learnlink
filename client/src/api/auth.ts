@@ -1,6 +1,7 @@
 import axios from "axios";
 import apiClient from "./apiClient";
 import { setAccessToken } from "@/lib/localStorage";
+import PATH from "@/contants/Path";
 
 export const signInApi = async (payload: {
   email: string;
@@ -63,5 +64,16 @@ export const checkAuthStatus = async (): Promise<{
     console.error("Không thể làm mới token:", error);
     localStorage.removeItem("accessToken");
     throw error;
+  }
+};
+
+export const signOutApi = async () => {
+  try {
+    await apiClient.get("/auth/logout");
+    localStorage.removeItem("accessToken");
+    window.location.href = PATH.HOME;
+  } catch (error: any) {
+    console.error("Đăng xuất không thành công:", error);
+    throw new Error(error.response.data.message);
   }
 };

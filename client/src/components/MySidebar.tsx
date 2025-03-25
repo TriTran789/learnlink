@@ -1,11 +1,13 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
-import { GraduationCap, UserRoundCog, UsersRound } from "lucide-react";
+import { GraduationCap, LogOut, UserRoundCog, UsersRound } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import LogoPng from "@/assets/logo.png";
 import PATH from "@/contants/Path";
-import { decodeAccesstoken } from "@/lib/utils";
+import { cn, decodeAccesstoken } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import { signOutApi } from "@/api/auth";
 
 export const Logo = () => {
   return (
@@ -42,24 +44,26 @@ const MySidebar = () => {
     { label: string; href: string; icon: ReactNode }[]
   >([]);
 
+  const { mutate: signOut } = useMutation({
+    mutationFn: signOutApi,
+  });
+
   useEffect(() => {
     if (role === "root") {
       setLinks([
         {
           label: "Teachers",
-          href: "#",
-          icon: (
-            <UserRoundCog size={20} />
-          ),
+          href: PATH.TEACHERS,
+          icon: <UserRoundCog size={20} />,
         },
         {
           label: "Students",
-          href: "#",
+          href: PATH.STUDENTS,
           icon: <UsersRound size={20} />,
         },
         {
           label: "Classes",
-          href: "#",
+          href: PATH.CLASSES,
           icon: <GraduationCap size={20} />,
         },
       ]);
@@ -78,6 +82,31 @@ const MySidebar = () => {
             {links.map((link, idx) => (
               <SidebarLink key={idx} link={link} />
             ))}
+            <button
+              className={cn(
+                "flex items-center justify-start gap-2  group/sidebar py-2 cursor-pointer"
+              )}
+              onClick={() => {
+                console.log("alo");
+                signOut();
+              }}
+            >
+              <LogOut size={20} />
+
+              <motion.span
+                animate={{
+                  display: true
+                    ? open
+                      ? "inline-block"
+                      : "none"
+                    : "inline-block",
+                  opacity: true ? (open ? 1 : 0) : 1,
+                }}
+                className="text-white text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+              >
+                Sign Out
+              </motion.span>
+            </button>
           </div>
         </div>
         <div>

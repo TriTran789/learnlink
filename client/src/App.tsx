@@ -23,6 +23,18 @@ const App = () => {
           index: true,
           element: <DashboardPage />,
         },
+        {
+          path: PATH.TEACHERS,
+          element: <div>Teachers</div>,
+        },
+        {
+          path: PATH.STUDENTS,
+          element: <div>Students</div>,
+        },
+        {
+          path: PATH.CLASSES,
+          element: <div>Classes</div>,
+        }
       ],
     },
     {
