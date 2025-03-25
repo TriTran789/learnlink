@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const decodeAccesstoken = () => {
   const { role, id } = jwtDecode(getAccessToken() as string) as {
-    role: string;
+    role: "root" | "student" | "teacher";
     id: string;
   };
 

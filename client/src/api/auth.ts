@@ -71,8 +71,8 @@ export const signOutApi = async () => {
   try {
     await apiClient.get("/auth/logout");
     localStorage.removeItem("accessToken");
-    window.location.href = PATH.HOME;
   } catch (error: any) {
+    window.location.href = PATH.HOME;
     console.error("Đăng xuất không thành công:", error);
     throw new Error(error.response.data.message);
   }

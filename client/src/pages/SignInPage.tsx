@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import PATH from "@/contants/Path";
 import { toast } from "sonner";
 import InputPassword from "@/components/InputPassword";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -35,7 +36,7 @@ const formSchema = z.object({
 const SignInPage = () => {
   const navigate = useNavigate();
 
-  const { mutate: signIn } = useMutation({
+  const { mutate: signIn, isPending } = useMutation({
     mutationFn: signInApi,
     onSuccess: (data) => {
       toast.success(data.message);
@@ -105,7 +106,9 @@ const SignInPage = () => {
                     </FormItem>
                   )}
                 />
-                <Button type="submit">Submit</Button>
+                <Button disabled={isPending} type="submit">
+                  {isPending ? <Loader2 className="animate-spin" /> : "Submit"}
+                </Button>
               </form>
             </Form>
           </CardContent>

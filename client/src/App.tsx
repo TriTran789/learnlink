@@ -3,7 +3,9 @@ import PATH from "@/contants/Path";
 import HomePage from "@/pages/HomePage";
 import SignInPage from "@/pages/SignInPage";
 import DashboardPage from "@/pages/DashboardPage";
-import DashboardLayout from "./layouts/DashboardLayout";
+import DashboardLayout from "@/layouts/DashboardLayout";
+import TeachersPage from "@/pages/TeachersPage";
+import CheckRole from "@/layouts/CheckRole";
 
 const App = () => {
   return useRoutes([
@@ -25,7 +27,11 @@ const App = () => {
         },
         {
           path: PATH.TEACHERS,
-          element: <div>Teachers</div>,
+          element: (
+            <CheckRole role="root">
+              <TeachersPage />
+            </CheckRole>
+          ),
         },
         {
           path: PATH.STUDENTS,
@@ -34,7 +40,7 @@ const App = () => {
         {
           path: PATH.CLASSES,
           element: <div>Classes</div>,
-        }
+        },
       ],
     },
     {

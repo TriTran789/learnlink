@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
-import { GraduationCap, LogOut, UserRoundCog, UsersRound } from "lucide-react";
-import { Link } from "react-router-dom";
+import { CircleUserRound, GraduationCap, LogOut, UserRoundCog, UsersRound } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import LogoPng from "@/assets/logo.png";
 import PATH from "@/contants/Path";
@@ -40,12 +40,17 @@ export const LogoIcon = () => {
 const MySidebar = () => {
   const { role } = decodeAccesstoken();
 
+  const navigate = useNavigate();
+
   const [links, setLinks] = useState<
     { label: string; href: string; icon: ReactNode }[]
   >([]);
 
   const { mutate: signOut } = useMutation({
     mutationFn: signOutApi,
+    onSuccess: () => {
+      navigate(PATH.HOME);
+    },
   });
 
   useEffect(() => {
@@ -114,15 +119,7 @@ const MySidebar = () => {
             link={{
               label: "Manu Arora",
               href: "#",
-              icon: (
-                <img
-                  src="https://assets.aceternity.com/manu.png"
-                  className="h-7 w-7 shrink-0 rounded-full"
-                  width={50}
-                  height={50}
-                  alt="Avatar"
-                />
-              ),
+              icon: <CircleUserRound size={20} />,
             }}
           />
         </div>
