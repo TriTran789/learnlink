@@ -1,6 +1,12 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
-import { CircleUserRound, GraduationCap, LogOut, UserRoundCog, UsersRound } from "lucide-react";
+import {
+  CircleUserRound,
+  GraduationCap,
+  LogOut,
+  UserRoundCog,
+  UsersRound,
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import LogoPng from "@/assets/logo.png";
@@ -9,30 +15,30 @@ import { cn, decodeAccesstoken } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { signOutApi } from "@/api/auth";
 
-export const Logo = () => {
+export const Logo = ({ open }: { open: boolean }) => {
   return (
     <Link
       to={PATH.HOME}
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-white"
     >
-      <img src={LogoPng} className="size-6" />
+      <img src={LogoPng} className={cn(open ? "size-10" : "size-6 transition-all duration-500")} />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-medium whitespace-pre text-white"
+        className="whitespace-pre text-white text-2xl font-bold"
       >
         LearnLink
       </motion.span>
     </Link>
   );
 };
-export const LogoIcon = () => {
+export const LogoIcon = ({ open }: { open: boolean }) => {
   return (
     <Link
       to={PATH.HOME}
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-white"
     >
-      <img src={LogoPng} className="size-6" />
+      <img src={LogoPng} className={cn(open ? "size-10" : "size-6 transition-all duration-500")} />
     </Link>
   );
 };
@@ -41,6 +47,8 @@ const MySidebar = () => {
   const { role } = decodeAccesstoken();
 
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
 
   const [links, setLinks] = useState<
     { label: string; href: string; icon: ReactNode }[]
@@ -75,13 +83,12 @@ const MySidebar = () => {
     }
   }, [role]);
 
-  const [open, setOpen] = useState(false);
   return (
     <Sidebar open={open} setOpen={setOpen}>
       <SidebarBody className="bg-black border-r border-b border-[#262626] md:h-screen justify-between gap-10">
         <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
           <div className="hidden md:block">
-            {open ? <Logo /> : <LogoIcon />}
+            {open ? <Logo open={open} /> : <LogoIcon open={open} />}
           </div>
           <div className="mt-8 flex flex-col gap-2">
             {links.map((link, idx) => (

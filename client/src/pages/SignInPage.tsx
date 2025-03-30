@@ -107,7 +107,7 @@ const SignInPage = () => {
                   )}
                 />
                 <Button disabled={isPending} type="submit">
-                  {isPending ? <Loader2 className="animate-spin" /> : "Submit"}
+                  {isPending ? <Loader2 className="animate-spin stroke-black" /> : "Submit"}
                 </Button>
               </form>
             </Form>

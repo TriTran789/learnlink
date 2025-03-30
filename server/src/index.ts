@@ -5,6 +5,7 @@ import "dotenv/config";
 import mongoose from "mongoose";
 import userRoute from "./routes/user.route";
 import authRoute from "./routes/auth.route";
+import teacherRoute from "./routes/teacher.route"
 
 mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING as string)
@@ -15,8 +16,8 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://learnlink-beige.vercel.app",
-    // origin: "http://localhost:5173",
+    // origin: "https://learnlink-beige.vercel.app",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -30,6 +31,7 @@ app.get("/health", async (req: Request, res: Response) => {
 
 app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
+app.use("/api/teacher", teacherRoute)
 
 app.listen(7000, () => {
   console.log("Server is running on port 7000");

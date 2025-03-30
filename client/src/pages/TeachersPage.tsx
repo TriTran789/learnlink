@@ -1,7 +1,12 @@
-const TeachersPage = () => {
-  return <main className="w-full">
-    TeachersPage
-  </main>;
-};
+import { DataTable } from "@/components/DataTable"
+import ContentLayout from "@/layouts/ContentLayout"
 
-export default TeachersPage;
+const TeachersPage = () => {
+  return (
+    <ContentLayout title="Teachers">
+      <DataTable />
+    </ContentLayout>
+  )
+}
+
+export default TeachersPage

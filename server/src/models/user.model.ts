@@ -16,10 +16,10 @@ const userSchema = new mongoose.Schema(
       enum: ["root", "teacher", "student"],
       type: String,
     },
-    //   profileId: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "Profile",
-    //   },
+    profileId: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
