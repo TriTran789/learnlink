@@ -26,7 +26,7 @@ const signIn = async (req: Request, res: Response) => {
         generateRefreshToken({ id: user._id, role: user.role }),
         {
           httpOnly: true,
-          sameSite: "strict",
+          sameSite: "none",
           secure: process.env.NODE_ENV === "production",
           maxAge: 7 * 24 * 60 * 60 * 1000,
         }
@@ -50,7 +50,7 @@ const logout = async (req: Request, res: Response) => {
     res
       .clearCookie("refreshToken", {
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: "none",
         secure: process.env.NODE_ENV === "production",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
