@@ -23,7 +23,11 @@ const signIn = async (req: Request, res: Response) => {
     res
       .cookie(
         "refreshToken",
-        generateRefreshToken({ id: user._id, role: user.role }),
+        generateRefreshToken({
+          id: user._id,
+          role: user.role,
+          profileId: user.profileId || "root",
+        }),
         {
           httpOnly: true,
           sameSite: "none",
@@ -36,7 +40,11 @@ const signIn = async (req: Request, res: Response) => {
         success: true,
         data: {
           message: "Sign In Successfully",
-          accessToken: generateAccessToken({ id: user._id, role: user.role }),
+          accessToken: generateAccessToken({
+            id: user._id,
+            role: user.role,
+            profileId: user.profileId || "root",
+          }),
         },
       });
   } catch (error) {
@@ -80,7 +88,11 @@ const refreshToken = async (req: Request, res: Response) => {
     );
     res.status(200).json({
       success: true,
-      accessToken: generateAccessToken({ id: decoded.id, role: decoded.role }),
+      accessToken: generateAccessToken({
+        id: decoded.id,
+        role: decoded.role,
+        profileId: decoded.profileId,
+      }),
     });
   } catch (error) {
     console.log(error);
