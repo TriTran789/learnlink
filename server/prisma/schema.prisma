@@ -1,0 +1,155 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role
+  // profileId String?   @unique
+  studentId String?  @unique
+  teacherId String?  @unique
+  // student   Student? @relation(fields: [profileId], references: [id], map: "User_student_profileId_fkey", onDelete: Cascade)
+  // teacher   Teacher? @relation(fields: [profileId], references: [id], map: "User_teacher_profileId_fkey", onDelete: Cascade)
+  student   Student? @relation(fields: [studentId], references: [id])
+  teacher   Teacher? @relation(fields: [teacherId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Student {
+  id       String @id @default(uuid())
+  fullName String
+  phone    String
+  image    String
+
+  user    User?
+  classes ClassStudent[]
+  results Result[]
+}
+
+model Teacher {
+  id       String @id @default(uuid())
+  fullName String
+  phone    String
+  level    Level
+
+  user    User?
+  classes Class[]
+}
+
+model Class {
+  id        String  @id @default(uuid())
+  teacherId String
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+  subjectId String
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+  lessons  Lesson[]
+  exams    Exam[]
+  students ClassStudent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subject {
+  id      String  @id @default(uuid())
+  name    String
+  classes Class[]
+}
+
+model Lesson {
+  id      String   @id @default(uuid())
+  name    String
+  content String
+  classId String
+  class   Class    @relation(fields: [classId], references: [id])
+  startAt DateTime
+  endAt   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Exam {
+  id        String     @id @default(uuid())
+  name      String
+  classId   String
+  class     Class      @relation(fields: [classId], references: [id])
+  startAt   DateTime
+  endAt     DateTime
+  time      Int
+  questions Question[]
+  results   Result[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Question {
+  id       String   @id @default(uuid())
+  question String
+  answer   String
+  content  String
+  examId   String
+  exam     Exam     @relation(fields: [examId], references: [id])
+  answers  Answer[]
+}
+
+model ClassStudent {
+  id        String  @id @default(uuid())
+  classId   String
+  class     Class   @relation(fields: [classId], references: [id])
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Result {
+  id        String   @id @default(uuid())
+  examId    String
+  exam      Exam     @relation(fields: [examId], references: [id])
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id])
+  answers   Answer[]
+  score     Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Answer {
+  id         String   @id @default(uuid())
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+  answer     String
+  resultId   String
+  result     Result   @relation(fields: [resultId], references: [id])
+}
+
+enum Level {
+  MASTER
+  PHD
+  PROFESSOR
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
