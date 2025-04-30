@@ -11,7 +11,8 @@ app.use(express.json());
 app.use(
   cors({
     // origin: "http://localhost:5173",
-    origin: "https://learnlink-kma.vercel.app",
+    // origin: "https://learnlink-kma.vercel.app",
+    origin: process.env.ORIGIN_URL,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
