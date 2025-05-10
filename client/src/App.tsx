@@ -4,6 +4,7 @@ import HomePage from "@/pages/HomePage";
 import SignInPage from "@/pages/SignInPage";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import TeacherPage from "./pages/TeacherPage";
+import StudentPage from "./pages/StudentPage";
 
 const App = () => {
   return useRoutes([
@@ -29,7 +30,7 @@ const App = () => {
         },
         {
           path: PATH.STUDENTS,
-          element: <div>Students</div>,
+          element: <StudentPage />,
         },
         {
           path: PATH.CLASSES,

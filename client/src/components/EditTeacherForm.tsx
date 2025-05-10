@@ -4,8 +4,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
+import { Teacher } from "@/types";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -26,8 +26,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { createTeacherApi } from "@/apis/teacher";
+import { updateTeacherApi } from "@/apis/teacher";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -35,18 +36,27 @@ const formSchema = z.object({
   fullName: z.string().nonempty("Full name is required"),
   level: z.string().nonempty("Level is required"),
   phone: z.string().nonempty("Phone number is required"),
-  email: z.string().email("Invalid email address"),
 });
 
 type Props = {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  teacher: Teacher | null;
   refetch: Function;
 };
 
-const CreateTeacherForm = ({ refetch }: Props) => {
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: createTeacherApi,
+const EditTeacherForm = ({ open, setOpen, teacher, refetch }: Props) => {
+  const { mutateAsync: updateTeacher, isPending } = useMutation({
+    mutationFn: ({
+      id,
+      payload,
+    }: {
+      id: string;
+      payload: { fullName: string; phone: string; level: string };
+    }) => updateTeacherApi(id, payload),
     onSuccess: (data) => {
       toast.success(data.message);
+      refetch();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -57,31 +67,37 @@ const CreateTeacherForm = ({ refetch }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: "",
-      level: "",
-      phone: "",
-      email: "",
+      fullName: teacher?.fullName || "",
+      level: teacher?.level || "",
+      phone: teacher?.phone || "",
     },
   });
+
+  useEffect(() => {
+    form.setValue("fullName", teacher?.fullName || "");
+    form.setValue("level", teacher?.level || "");
+    form.setValue("phone", teacher?.phone || "");
+  }, [teacher]);
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // console.log(values);
-    await mutateAsync(values);
+    if (teacher?.teacherId) {
+      await updateTeacher({ id: teacher.teacherId, payload: values });
+    } else {
+      toast.error("Teacher ID is missing.");
+    }
     refetch();
-    form.reset();
+    setOpen(false);
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button>New</Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-3xl bg-black text-white">
         <DialogHeader>
-          <DialogTitle>Create New Teacher</DialogTitle>
+          <DialogTitle>Update Teacher Informattion</DialogTitle>
           <DialogDescription>Enter new teacher information.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -94,19 +110,6 @@ const CreateTeacherForm = ({ refetch }: Props) => {
                   <FormLabel>Fullname</FormLabel>
                   <FormControl>
                     <Input placeholder="John Smith" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="example@example.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -157,4 +160,4 @@ const CreateTeacherForm = ({ refetch }: Props) => {
   );
 };
 
-export default CreateTeacherForm;
+export default EditTeacherForm;

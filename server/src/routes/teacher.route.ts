@@ -1,7 +1,15 @@
 import { Router } from "express";
 import authorize from "../middlewares/authorize";
-import { createTeacherValidator } from "../validators/teacher.validator";
-import { createTeacher, getTeachers } from "../controllers/teacher.controller";
+import {
+  createTeacherValidator,
+  updateTeacherValidator,
+} from "../validators/teacher.validator";
+import {
+  createTeacher,
+  deleteTeacher,
+  getTeachers,
+  updateTeacher,
+} from "../controllers/teacher.controller";
 
 const router = Router();
 
@@ -12,10 +20,15 @@ router.post(
   createTeacher
 );
 
-router.get(
-  "/get-teachers",
+router.get("/get-teachers", authorize("ADMIN"), getTeachers);
+
+router.delete("/delete-teacher/:id", authorize("ADMIN"), deleteTeacher);
+
+router.put(
+  "/update-teacher/:id",
   authorize("ADMIN"),
-  getTeachers
-)
+  updateTeacherValidator,
+  updateTeacher
+);
 
 export default router;

@@ -1,48 +1,113 @@
+import { deleteTeacherApi, getTeachers } from "@/apis/teacher";
 import CreateTeacherForm from "@/components/CreateTeacherForm";
 import { DataTable } from "@/components/DataTable";
+import Loading from "@/components/Loading";
 import ContentLayout from "@/layouts/ContentLayout";
-import { useQuery } from "@tanstack/react-query";
+import { Teacher } from "@/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-
-type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
+import { MoreHorizontal } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { useState } from "react";
+import EditTeacherForm from "@/components/EditTeacherForm";
 
 const TeacherPage = () => {
-  const {} = useQuery({
+  const [open, setOpen] = useState(false);
+  const [teacher, setTeacher] = useState<Teacher | null>(null);
+
+  const {
+    data: teachers,
+    isPending,
+    refetch,
+  } = useQuery({
     queryKey: ["teachers"],
+    queryFn: getTeachers,
   });
-  
-  const columns: ColumnDef<Payment>[] = [
+
+  const { mutateAsync: deleteTeacher } = useMutation({
+    mutationFn: deleteTeacherApi,
+    onSuccess: (data) => {
+      toast.success(data.message);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const columns: ColumnDef<Teacher>[] = [
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: "fullName",
+      header: "Full Name",
     },
     {
-      accessorKey: "email",
-      header: "Email",
+      accessorKey: "level",
+      header: "Level",
     },
     {
-      accessorKey: "amount",
-      header: "Amount",
+      accessorKey: "phone",
+      header: "Phone",
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const teacher = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0 cursor-pointer">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() => {
+                  setOpen(true);
+                  setTeacher(teacher);
+                }}
+              >
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={async () => {
+                  await deleteTeacher(teacher.userId);
+                  refetch();
+                }}
+              >
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
     },
   ];
 
-  const data: Payment[] = [
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-  ];
+  if (isPending) {
+    return <Loading />;
+  }
 
   return (
     <ContentLayout title="Teachers">
-      <DataTable columns={columns} data={data} button={<CreateTeacherForm />} />
+      <EditTeacherForm
+        open={open}
+        setOpen={setOpen}
+        teacher={teacher}
+        refetch={refetch}
+      />
+      <DataTable
+        columns={columns}
+        data={teachers || []}
+        button={<CreateTeacherForm refetch={refetch} />}
+      />
     </ContentLayout>
   );
 };

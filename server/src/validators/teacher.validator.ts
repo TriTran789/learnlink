@@ -10,3 +10,12 @@ export const createTeacherValidator = [
   body("email").isEmail().withMessage("Invalid email"),
   validate,
 ];
+
+export const updateTeacherValidator = [
+  body("fullName").isString().withMessage("Full name is required"),
+  body("level")
+    .isIn(["MASTER", "PHD", "PROFESSOR"])
+    .withMessage("Invalid level"),
+  body("phone").isString().withMessage("Phone is required"),
+  validate,
+];
