@@ -33,7 +33,8 @@ model Student {
   id       String @id @default(uuid())
   fullName String
   phone    String
-  image    String
+  imageUrl String
+  publicId String
 
   user    User?
   classes ClassStudent[]

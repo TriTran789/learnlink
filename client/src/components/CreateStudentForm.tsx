@@ -21,8 +21,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { FileUpload } from "./ui/file-upload";
 import { useState } from "react";
-import { X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import { toast } from "sonner";
+import { convertToBase64 } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import { createStudentApi } from "@/apis/student";
 
 const formSchema = z.object({
   fullName: z.string().nonempty("Full name is required"),
@@ -42,20 +45,28 @@ const CreateStudentForm = () => {
     },
   });
 
+  const { mutateAsync: createStudent, isPending: pendingCreateStudent } =
+    useMutation({
+      mutationFn: createStudentApi,
+      onSuccess: () => {
+        toast.success("Student created successfully");
+      },
+      onError: (error: any) => {
+        toast.error(error.message);
+      },
+    });
+
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     if (!image) {
       toast.error("Image is required");
       return;
     }
-    const formData = new FormData();
-    formData.append("fullName", values.fullName);
-    formData.append("email", values.email);
-    formData.append("phone", values.phone);
-    formData.append("image", image);
-    console.log(formData);
+    const base64 = await convertToBase64(image);
+    // console.log({ ...values, image: base64 });
+    await createStudent({ ...values, image: base64 });
   }
 
   return (
@@ -126,7 +137,13 @@ const CreateStudentForm = () => {
             ) : (
               <FileUpload onChange={(files: File[]) => setImage(files[0])} />
             )}
-            <Button type="submit">Submit</Button>
+            <Button type="submit">
+              {pendingCreateStudent ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                "Submit"
+              )}
+            </Button>
           </form>
         </Form>
       </DialogContent>

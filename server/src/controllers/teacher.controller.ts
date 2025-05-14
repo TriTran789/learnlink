@@ -142,7 +142,7 @@ export const deleteTeacher = async (req: Request, res: Response) => {
   }
 };
 
-export const updateTeacher = async (req: Request, res: Response) => {
+export const updateTeacher = async (req: Request, res: Response) => { 
   try {
     const { id } = req.params;
     const { fullName, level, phone } = req.body;
