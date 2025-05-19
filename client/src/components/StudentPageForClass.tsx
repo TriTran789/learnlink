@@ -68,7 +68,6 @@ const StudentPageForClass = ({ classId }: Props) => {
 
   const {
     mutateAsync: deleteStudentFromClass,
-    isPending: pendingDeleteStudent,
   } = useMutation({
     mutationFn: ({
       classId,
