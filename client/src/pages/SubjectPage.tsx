@@ -1,7 +1,7 @@
-import { deleteStudentApi, getAllStudents } from "@/apis/student";
-import CreateStudentForm from "@/components/CreateStudentForm";
+import { deleteSubjectApi, getAllSubjectsApi } from "@/apis/subject";
+import CreateSubjectForm from "@/components/CreateSubjectForm";
 import { DataTable } from "@/components/DataTable";
-import EditStudentForm from "@/components/EditStudentForm";
+import EditSubjectForm from "@/components/EditSubjectForm";
 import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,62 +11,53 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ContentLayout from "@/layouts/ContentLayout";
-import { Student } from "@/types";
+import { Subject } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const StudentPage = () => {
+const SubjectPage = () => {
   const [open, setOpen] = useState(false);
-  const [student, setStudent] = useState<Student | null>(null);
+  const [subject, setSubject] = useState<Subject | null>(null);
 
   const {
-    data: students,
-    isPending: pendingGetStudents,
-    refetch: refetchStudent,
+    data: subjects,
+    isPending,
+    refetch,
   } = useQuery({
-    queryKey: ["students"],
-    queryFn: getAllStudents,
+    queryKey: ["subjects"],
+    queryFn: getAllSubjectsApi,
   });
 
-  const { mutateAsync: deleteStudent } = useMutation({
-    mutationFn: (id: string) => deleteStudentApi(id),
+  const { mutateAsync } = useMutation({
+    mutationFn: (id: string) => deleteSubjectApi(id),
     onSuccess: () => {
-      toast.success("Student deleted successfully");
-      refetchStudent();
+      toast.success("Subject deleted successfully");
+      refetch();
     },
     onError: (error) => {
       toast.error(error.message);
     },
   });
 
-  if (pendingGetStudents) {
+  if (isPending) {
     return <Loading />;
   }
 
-  const columns: ColumnDef<Student>[] = [
+  const columns: ColumnDef<Subject>[] = [
     {
-      accessorKey: "fullName",
-      header: "Full Name",
-    },
-    {
-      accessorKey: "phone",
-      header: "Phone",
-    },
-    {
-      accessorKey: "imageUrl",
-      header: "Image",
-      cell: ({ row }) => (
-        <img src={row.original.imageUrl} alt="Student" className="w-32" />
-      ),
+      accessorKey: "name",
+      header: "Name",
+      cell: ({ row }) => <span>{row.getValue("name")}</span>,
     },
     {
       id: "actions",
       header: "Actions",
       cell: ({ row }) => {
-        const student = row.original;
+        const subject = row.original;
+
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -79,15 +70,15 @@ const StudentPage = () => {
               <DropdownMenuItem
                 onClick={() => {
                   setOpen(true);
-                  setStudent(student);
+                  setSubject(subject);
                 }}
               >
                 Edit
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={async () => {
-                  await deleteStudent(student.id);
-                  refetchStudent();
+                  await mutateAsync(subject.id);
+                  refetch();
                 }}
               >
                 Delete
@@ -100,21 +91,21 @@ const StudentPage = () => {
   ];
 
   return (
-    <ContentLayout title="Students">
-      <EditStudentForm
+    <ContentLayout title="Subjects">
+      <EditSubjectForm
+        refetch={refetch}
         open={open}
         setOpen={setOpen}
-        refetch={refetchStudent}
-        student={student}
+        subject={subject}
       />
       <DataTable
         columns={columns}
-        data={students || []}
-        button={<CreateStudentForm refetch={refetchStudent} />}
-        keyFilter="fullName"
+        data={subjects || []}
+        button={<CreateSubjectForm refetch={refetch} />}
+        keyFilter="name"
       />
     </ContentLayout>
   );
 };
 
-export default StudentPage;
+export default SubjectPage;

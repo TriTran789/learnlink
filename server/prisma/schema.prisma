@@ -53,6 +53,7 @@ model Teacher {
 
 model Class {
   id        String  @id @default(uuid())
+  name      String
   teacherId String
   teacher   Teacher @relation(fields: [teacherId], references: [id])
   subjectId String

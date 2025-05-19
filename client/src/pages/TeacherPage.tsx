@@ -107,6 +107,7 @@ const TeacherPage = () => {
         columns={columns}
         data={teachers || []}
         button={<CreateTeacherForm refetch={refetch} />}
+        keyFilter="fullName"
       />
     </ContentLayout>
   );

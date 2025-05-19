@@ -10,6 +10,8 @@ import "@tensorflow/tfjs-node";
 import * as canvas from "canvas";
 import * as faceapi from "face-api.js";
 import path from "path";
+import subjectRoute from "./routes/subject.route";
+import classRoute from "./routes/class.route";
 
 // Cấu hình Cloudinary
 cloudinary.config({
@@ -67,6 +69,8 @@ app.get("/health", (req, res) => {
 app.use("/api/v1", authRoute);
 app.use("/api/v1", teacherRoute);
 app.use("/api/v1", studentRoute);
+app.use("/api/v1", subjectRoute);
+app.use("/api/v1", classRoute);
 
 app.listen(7000, () => {
   console.log("Server is running on port 7000");

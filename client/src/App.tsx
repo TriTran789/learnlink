@@ -5,6 +5,9 @@ import SignInPage from "@/pages/SignInPage";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import TeacherPage from "./pages/TeacherPage";
 import StudentPage from "./pages/StudentPage";
+import SubjectPage from "./pages/SubjectPage";
+import ClassPage from "./pages/ClassPage";
+import ClassDetailPage from "./pages/ClassDetailPage";
 
 const App = () => {
   return useRoutes([
@@ -34,11 +37,15 @@ const App = () => {
         },
         {
           path: PATH.CLASSES,
-          element: <div>Classes</div>,
+          element: <ClassPage />,
         },
         {
           path: PATH.SUBJECTS,
-          element: <div>Subjects</div>,
+          element: <SubjectPage />,
+        },
+        {
+          path: `${PATH.CLASSES}/:classId`,
+          element: <ClassDetailPage />,
         },
       ],
     },
