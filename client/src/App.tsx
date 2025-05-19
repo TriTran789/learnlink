@@ -8,6 +8,7 @@ import StudentPage from "./pages/StudentPage";
 import SubjectPage from "./pages/SubjectPage";
 import ClassPage from "./pages/ClassPage";
 import ClassDetailPage from "./pages/ClassDetailPage";
+import TestPage from "./pages/TestPage";
 
 const App = () => {
   return useRoutes([
@@ -48,6 +49,10 @@ const App = () => {
           element: <ClassDetailPage />,
         },
       ],
+    },
+    {
+      path: "/test",
+      element: <TestPage />,
     },
   ]);
 };
