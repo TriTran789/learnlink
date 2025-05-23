@@ -8,6 +8,8 @@ const createPath = () => {
     STUDENTS: `${DASHBOARD}/students`,
     CLASSES: `${DASHBOARD}/classes`,
     SUBJECTS: `${DASHBOARD}/subjects`,
+    CLASS_TECHER: `${DASHBOARD}/class-teacher`,
+    CALL: `/call`,
   };
 };
 

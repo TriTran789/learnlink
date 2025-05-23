@@ -48,3 +48,76 @@ export type ClassDetail = {
   teaccher_name: string;
   subject_name: string;
 };
+
+export type PayloadLesson = {
+  name: string;
+  start_time: Date;
+  end_time: Date;
+  content?: string | undefined;
+};
+
+export type Lesson = {
+  id: string;
+  name: string;
+  content: string;
+  classId: string;
+  startAt: string;
+  endAt: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PayloadExam = {
+  name: string;
+  classId: string;
+  startAt: Date;
+  endAt: Date;
+  duration: number;
+};
+
+export type Exam = {
+  id: string;
+  name: string;
+  startAt: string;
+  endAt: string;
+  duration: number;
+  classId: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ExamDetail = {
+  id: string;
+  name: string;
+  startAt: string;
+  endAt: string;
+  duration: number;
+  classId: string;
+  createdAt: string;
+  updatedAt: string;
+  questions: Question[];
+};
+
+export interface Question {
+  id: string;
+  content: string;
+  examId: string;
+  answers: Answer[];
+}
+
+export interface Answer {
+  id: string;
+  content: string;
+  isCorrect: boolean;
+  questionId: string;
+}
+
+export type PayloadQuestion = {
+  examId: string;
+  content: string;
+  a: string;
+  b: string;
+  c: string;
+  d: string;
+  answer: "a" | "b" | "c" | "d";
+};

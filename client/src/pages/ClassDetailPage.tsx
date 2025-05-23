@@ -1,11 +1,13 @@
 import { getClassDetailApi } from "@/apis/class";
 import Loading from "@/components/Loading";
-import StudentPageForClass from "@/components/StudentPageForClass";
+import StudentPageForClass from "@/pages/StudentPageForClass";
 import { Button } from "@/components/ui/button";
 import ContentLayout from "@/layouts/ContentLayout";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import LessonPageForClass from "./LessonPageForClass";
+import ExamPageForClass from "@/pages/ExamPageForClass";
 
 const ClassDetailPage = () => {
   const { classId } = useParams<{ classId: string }>();
@@ -36,8 +38,8 @@ const ClassDetailPage = () => {
           Student
         </Button>
       </div>
-      {page === "lessons" && <div>Lessons</div>}
-      {page === "exams" && <div>Exams</div>}
+      {page === "lessons" && <LessonPageForClass classId={classId as string} />}
+      {page === "exams" && <ExamPageForClass classId={classId as string} />}
       {page === "students" && (
         <StudentPageForClass classId={classId as string} />
       )}

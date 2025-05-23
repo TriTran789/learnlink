@@ -137,15 +137,13 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  // title,
   button,
-  // navLink,
   keyFilter,
+  hiddenSearch = false,
 }: DataTableProps<TData, TValue> & {
-  // title?: string;
   button?: React.ReactNode;
-  // navLink?: React.ReactNode;
   keyFilter?: string;
+  hiddenSearch?: boolean;
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -176,21 +174,24 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-8">
-        {/* <div className="text-lg font-bold text-nowrap uppercase">{title}</div> */}
-        <Input
-          placeholder="Tìm kiếm..."
-          value={
-            (table.getColumn(keyFilter || "")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn(keyFilter || "")?.setFilterValue(event.target.value)
-          }
-          className="w-full"
-        />
-        {button}
-      </div>
-      {/* {navLink} */}
+      {!hiddenSearch && (
+        <div className="flex items-center py-4 gap-8">
+          <Input
+            placeholder="Tìm kiếm..."
+            value={
+              (table.getColumn(keyFilter || "")?.getFilterValue() as string) ??
+              ""
+            }
+            onChange={(event) =>
+              table
+                .getColumn(keyFilter || "")
+                ?.setFilterValue(event.target.value)
+            }
+            className="w-full"
+          />
+          {button}
+        </div>
+      )}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -198,7 +199,10 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-white font-semibold">
+                    <TableHead
+                      key={header.id}
+                      className="text-white font-semibold"
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(

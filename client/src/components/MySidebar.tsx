@@ -15,6 +15,7 @@ import { cn, decodeAccesstoken } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import PATH from "@/constants/PATH";
 import { signOutApi } from "@/apis/auth";
+import TeacherSidebarItems from "./TeacherSidebarItems";
 
 export const Logo = ({ open }: { open: boolean }) => {
   return (
@@ -103,7 +104,8 @@ const MySidebar = () => {
           <div className="hidden md:block">
             {open ? <Logo open={open} /> : <LogoIcon open={open} />}
           </div>
-          <div className="mt-8 flex flex-col gap-2">
+          <div className="mt-8 flex flex-col flex-1 gap-2">
+            {open && role === "TEACHER" && <TeacherSidebarItems />}
             {links.map((link, idx) => (
               <SidebarLink key={idx} link={link} />
             ))}
@@ -112,7 +114,6 @@ const MySidebar = () => {
                 "flex items-center justify-start gap-2  group/sidebar py-2 cursor-pointer"
               )}
               onClick={() => {
-                console.log("alo");
                 signOut();
               }}
             >

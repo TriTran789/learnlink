@@ -11,6 +11,8 @@ import {
   getAllClasses,
   getClassDetail,
   getStudentForClass,
+  teacherGetClass,
+  teacherGetClassDetail,
 } from "../controllers/class.controller";
 
 const router = Router();
@@ -29,6 +31,13 @@ router.delete(
   "/class/:classId/student/:studentId",
   authorize("ADMIN"),
   deleteSudentFromClass
+);
+
+router.get("/teacher/:teacherId/class", authorize("TEACHER"), teacherGetClass);
+router.get(
+  "/teacher/:teacherId/class/:classId",
+  authorize("TEACHER"),
+  teacherGetClassDetail
 );
 
 export default router;

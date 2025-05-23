@@ -8,7 +8,10 @@ import StudentPage from "./pages/StudentPage";
 import SubjectPage from "./pages/SubjectPage";
 import ClassPage from "./pages/ClassPage";
 import ClassDetailPage from "./pages/ClassDetailPage";
-import TestPage from "./pages/TestPage";
+import ExamDetailPage from "./pages/ExamDetailPage";
+import ClassDetailForTeacherPage from "./pages/ClassDetailForTeacherPage";
+import LessonDetailForTeacherStudentPage from "./pages/LessonDetailForTeacherStudentPage";
+import CallPage from "./pages/CallPage";
 
 const App = () => {
   return useRoutes([
@@ -48,11 +51,23 @@ const App = () => {
           path: `${PATH.CLASSES}/:classId`,
           element: <ClassDetailPage />,
         },
+        {
+          path: `${PATH.CLASSES}/:classId/exam/:examId`,
+          element: <ExamDetailPage />,
+        },
+        {
+          path: `${PATH.CLASS_TECHER}/:classId`,
+          element: <ClassDetailForTeacherPage />,
+        },
+        {
+          path: `${PATH.CLASS_TECHER}/:classId/lesson/:lessonId`,
+          element: <LessonDetailForTeacherStudentPage />,
+        },
       ],
     },
     {
-      path: "/test",
-      element: <TestPage />,
+      path: `${PATH.CALL}/:lessonId`,
+      element: <CallPage />,
     },
   ]);
 };

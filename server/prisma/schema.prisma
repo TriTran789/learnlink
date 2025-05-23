@@ -39,6 +39,7 @@ model Student {
   user    User?
   classes ClassStudent[]
   results Result[]
+  studentAnswers StudentAnswer[]
 }
 
 model Teacher {
@@ -67,6 +68,17 @@ model Class {
   updatedAt DateTime @updatedAt
 }
 
+model ClassStudent {
+  id        String  @id @default(uuid())
+  classId   String
+  class     Class   @relation(fields: [classId], references: [id])
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Subject {
   id      String  @id @default(uuid())
   name    String
@@ -89,11 +101,11 @@ model Lesson {
 model Exam {
   id        String     @id @default(uuid())
   name      String
-  classId   String
-  class     Class      @relation(fields: [classId], references: [id])
   startAt   DateTime
   endAt     DateTime
-  time      Int
+  duration  Int
+  classId   String
+  class     Class      @relation(fields: [classId], references: [id])
   questions Question[]
   results   Result[]
 
@@ -102,46 +114,50 @@ model Exam {
 }
 
 model Question {
-  id       String   @id @default(uuid())
-  question String
-  answer   String
-  content  String
-  examId   String
-  exam     Exam     @relation(fields: [examId], references: [id])
-  answers  Answer[]
-}
-
-model ClassStudent {
-  id        String  @id @default(uuid())
-  classId   String
-  class     Class   @relation(fields: [classId], references: [id])
-  studentId String
-  student   Student @relation(fields: [studentId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Result {
-  id        String   @id @default(uuid())
-  examId    String
-  exam      Exam     @relation(fields: [examId], references: [id])
-  studentId String
-  student   Student  @relation(fields: [studentId], references: [id])
-  answers   Answer[]
-  score     Int
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id      String   @id @default(uuid())
+  content String
+  examId  String
+  exam    Exam     @relation(fields: [examId], references: [id])
+  answers Answer[]
 }
 
 model Answer {
-  id         String   @id @default(uuid())
-  questionId String
-  question   Question @relation(fields: [questionId], references: [id])
-  answer     String
-  resultId   String
-  result     Result   @relation(fields: [resultId], references: [id])
+  id        String  @id @default(uuid())
+  content   String
+  isCorrect Boolean
+
+  questionId    String
+  question      Question        @relation(fields: [questionId], references: [id])
+  StudentAnswer StudentAnswer[]
+}
+
+model Result {
+  id    String @id @default(uuid())
+  score Int
+
+  examId String
+  exam   Exam   @relation(fields: [examId], references: [id])
+
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id])
+
+  studentAnswers StudentAnswer[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StudentAnswer {
+  id String @id @default(uuid())
+
+  answerId String
+  answer   Answer @relation(fields: [answerId], references: [id])
+
+  resultId  String
+  result    Result   @relation(fields: [resultId], references: [id])
+
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id])
 }
 
 enum Level {

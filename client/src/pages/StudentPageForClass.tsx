@@ -1,11 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { DataTable } from "./DataTable";
 import {
   addStudentToClassApi,
   deleteStudentFromClassApi,
   getStudentForClassApi,
 } from "@/apis/class";
-import Loading from "./Loading";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,6 +21,8 @@ import { toast } from "sonner";
 import { Loader2, X } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Student } from "@/types";
+import Loading from "@/components/Loading";
+import { DataTable } from "@/components/DataTable";
 
 const FormSchema = z.object({
   students: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -123,7 +123,7 @@ const StudentPageForClass = ({ classId }: Props) => {
 
   return (
     <div className="flex gap-8">
-      <DataTable columns={columns} data={data?.studentsInClass || []} />
+      <DataTable columns={columns} data={data?.studentsInClass || []} keyFilter="fullName" />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

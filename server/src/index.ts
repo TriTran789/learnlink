@@ -13,6 +13,8 @@ import path from "path";
 import subjectRoute from "./routes/subject.route";
 import classRoute from "./routes/class.route";
 import lessonRoute from "./routes/lesson.route";
+import examRoute from "./routes/exam.route";
+import questionRoute from "./routes/question.route";
 
 // Cấu hình Cloudinary
 cloudinary.config({
@@ -73,6 +75,8 @@ app.use("/api/v1", studentRoute);
 app.use("/api/v1", subjectRoute);
 app.use("/api/v1", classRoute);
 app.use("/api/v1", lessonRoute);
+app.use("/api/v1", examRoute);
+app.use("/api/v1", questionRoute);
 
 app.listen(7000, () => {
   console.log("Server is running on port 7000");

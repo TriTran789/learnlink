@@ -1,4 +1,12 @@
-import { Class, ClassDetail, PayloadClass, Student } from "@/types";
+import {
+  Class,
+  ClassDetail,
+  Exam,
+  Lesson,
+  PayloadClass,
+  Student,
+  Subject,
+} from "@/types";
 import api from "./api";
 
 export const createClassApi = async (payload: PayloadClass) => {
@@ -69,6 +77,50 @@ export const deleteStudentFromClassApi = async (
     return response.data;
   } catch (error: any) {
     console.error("Error deleting student from class:", error);
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const teacherGetClassesApi = async (
+  teacherId: string
+): Promise<
+  {
+    id: string;
+    name: string;
+    teacherId: string;
+    subjectId: string;
+    createdAt: string;
+    updatedAt: string;
+  }[]
+> => {
+  try {
+    const response = await api.get(`/teacher/${teacherId}/class`);
+    return response.data.data;
+  } catch (error: any) {
+    console.error("Error fetching teacher classes:", error);
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const teacherGetClassDetailApi = async ({
+  teacherId,
+  classId,
+}: {
+  teacherId: string;
+  classId: string;
+}): Promise<{
+  id: string;
+  name: string;
+  lessons: Lesson[];
+  exams: Exam[];
+  students: Student[];
+  subject: Subject;
+}> => {
+  try {
+    const response = await api.get(`/teacher/${teacherId}/class/${classId}`);
+    return response.data.data;
+  } catch (error: any) {
+    console.error("Error fetching teacher class detail:", error);
     throw new Error(error.response.data.message);
   }
 };
