@@ -59,6 +59,7 @@ const CallComponent = ({ data }: Props) => {
   const [call, setCall] = useState<Call>();
 
   useEffect(() => {
+    console.log("apiKey", import.meta.env.VITE_STREAM_API_KEY);
     const client = new StreamVideoClient({
       apiKey: import.meta.env.VITE_STREAM_API_KEY,
       user: data.user,
