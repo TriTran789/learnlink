@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
 import { streamClient } from "../services/stream";
-import moment from "moment-timezone";
 
 export const createLesson = async (req: Request, res: Response) => {
   try {
@@ -118,11 +117,7 @@ export const makeCall = async (req: Request, res: Response) => {
       return;
     }
 
-    const token = streamClient.createToken(
-      userId,
-      Math.floor(moment().add(1, "hour").utc().valueOf() / 1000),
-      Math.floor(Date.now() / 1000)
-    );
+    const token = streamClient.createToken(userId);
 
     const data = {
       token,
