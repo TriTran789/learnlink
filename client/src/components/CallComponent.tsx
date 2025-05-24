@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import {
   Call,
   CallControls,
@@ -14,7 +14,7 @@ import {
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import "./index.css";
 import { Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const MyUILayout = () => {
   const navigate = useNavigate();
@@ -55,6 +55,7 @@ type Props = {
 };
 
 const CallComponent = ({ data }: Props) => {
+  const { lessonId } = useParams();
   const [client, setClient] = useState<StreamVideoClient>();
   const [call, setCall] = useState<Call>();
 
@@ -65,7 +66,7 @@ const CallComponent = ({ data }: Props) => {
       token: data.token,
     });
     setClient(client);
-    const call = client.call("default", data.user.id);
+    const call = client.call("default", lessonId || "default-call-id");
     setCall(call);
     call.join({ create: true });
 
