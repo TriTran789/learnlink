@@ -267,3 +267,71 @@ export const teacherGetClassDetail = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const studentGetClass = async (req: Request, res: Response) => {
+  try {
+    const { studentId } = req.params;
+
+    const classes = await prisma.classStudent.findMany({
+      where: {
+        studentId,
+      },
+      include: {
+        class: true,
+      },
+    });
+
+    const data = classes.map((classStudennt) => {
+      return {
+        id: classStudennt.class.id,
+        name: classStudennt.class.name,
+      };
+    });
+
+    res.status(200).json({
+      message: "Classes fetched successfully",
+      data,
+    });
+  } catch (error) {
+    console.error("Error fetching classes for student:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const studentGetClassDetail = async (req: Request, res: Response) => {
+  try {
+    const { classId } = req.params;
+
+    const classDetail = await prisma.class.findUnique({
+      where: {
+        id: classId,
+      },
+      include: {
+        lessons: true,
+        exams: true,
+        subject: true,
+      },
+    });
+
+    if (!classDetail) {
+      res.status(404).json({ message: "Class not found" });
+      return;
+    }
+
+    const data = {
+      id: classDetail.id,
+      name: classDetail.name,
+      lessons: classDetail.lessons,
+      exams: classDetail.exams,
+      subject: classDetail.subject,
+    };
+
+    res.status(200).json({
+      message: "Class detail fetched successfully",
+      data,
+    });
+  } catch (error) {
+    console.error("Error fetching class detail for student:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

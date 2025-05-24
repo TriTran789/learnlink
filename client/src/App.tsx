@@ -12,6 +12,7 @@ import ExamDetailPage from "./pages/ExamDetailPage";
 import ClassDetailForTeacherPage from "./pages/ClassDetailForTeacherPage";
 import LessonDetailForTeacherStudentPage from "./pages/LessonDetailForTeacherStudentPage";
 import CallPage from "./pages/CallPage";
+import ClassDetailForStudentPage from "./pages/ClassDetailForStudentPage";
 
 const App = () => {
   return useRoutes([
@@ -62,6 +63,10 @@ const App = () => {
         {
           path: `${PATH.CLASS_TECHER}/:classId/lesson/:lessonId`,
           element: <LessonDetailForTeacherStudentPage />,
+        },
+        {
+          path: `${PATH.CLASS_STUDENT}/:classId`,
+          element: <ClassDetailForStudentPage />,
         },
       ],
     },

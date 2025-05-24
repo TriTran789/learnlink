@@ -11,6 +11,8 @@ import {
   getAllClasses,
   getClassDetail,
   getStudentForClass,
+  studentGetClass,
+  studentGetClassDetail,
   teacherGetClass,
   teacherGetClassDetail,
 } from "../controllers/class.controller";
@@ -38,6 +40,13 @@ router.get(
   "/teacher/:teacherId/class/:classId",
   authorize("TEACHER"),
   teacherGetClassDetail
+);
+
+router.get("/student/:studentId/class", authorize("STUDENT"), studentGetClass);
+router.get(
+  "/student/class/:classId",
+  authorize("STUDENT"),
+  studentGetClassDetail
 );
 
 export default router;

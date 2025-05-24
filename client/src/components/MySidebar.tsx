@@ -16,6 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 import PATH from "@/constants/PATH";
 import { signOutApi } from "@/apis/auth";
 import TeacherSidebarItems from "./TeacherSidebarItems";
+import StudentSidebarItems from "./StudentSidebarItems";
 
 export const Logo = ({ open }: { open: boolean }) => {
   return (
@@ -106,6 +107,7 @@ const MySidebar = () => {
           </div>
           <div className="mt-8 flex flex-col flex-1 gap-2">
             {open && role === "TEACHER" && <TeacherSidebarItems />}
+            {open && role === "STUDENT" && <StudentSidebarItems />}
             {links.map((link, idx) => (
               <SidebarLink key={idx} link={link} />
             ))}

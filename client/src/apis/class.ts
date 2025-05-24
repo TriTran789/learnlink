@@ -124,3 +124,31 @@ export const teacherGetClassDetailApi = async ({
     throw new Error(error.response.data.message);
   }
 };
+
+export const studentGetClassesApi = async (
+  studentId: string
+): Promise<{ id: string; name: string }[]> => {
+  try {
+    const response = await api.get(`/student/${studentId}/class`);
+    return response.data.data;
+  } catch (error: any) {
+    console.error("Error fetching student classes:", error);
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const studentGetClassDetailApi = async (classId: string): Promise<{
+  id: string;
+  name: string;
+  lessons: Lesson[];
+  exams: Exam[];
+  subject: Subject;
+}> => {
+  try {
+    const response = await api.get(`/student/class/${classId}`);
+    return response.data.data;
+  } catch (error: any) {
+    console.error("Error fetching student class detail:", error);
+    throw new Error(error.response.data.message);
+  }
+};
