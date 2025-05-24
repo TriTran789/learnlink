@@ -56,6 +56,7 @@ type Props = {
 
 const CallComponent = ({ data }: Props) => {
   const { lessonId } = useParams();
+  console.log(lessonId);
   const [client, setClient] = useState<StreamVideoClient>();
   const [call, setCall] = useState<Call>();
 
@@ -66,7 +67,7 @@ const CallComponent = ({ data }: Props) => {
       token: data.token,
     });
     setClient(client);
-    const call = client.call("default", lessonId || "default-call-id");
+    const call = client.call("default", lessonId!);
     setCall(call);
     call.join({ create: true });
 
