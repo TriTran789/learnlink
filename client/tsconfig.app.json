@@ -24,8 +24,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-    "typeRoots": ["./types", "./node_modules/@types"]
+    "noUncheckedSideEffectImports": true
   },
-  "include": ["src/**/*", "types/**/*"]
+  "include": ["src"]
 }
