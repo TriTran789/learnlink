@@ -50,3 +50,15 @@ export const signOutApi = async () => {
     throw new Error(error.response.data.message);
   }
 };
+
+export const CheckFaceApi = async (base64Image: string) => {
+  try {
+    const response = await api.post("/check-face", {
+      image: base64Image,
+    });
+    return response.data;
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.response.data.message);
+  }
+};

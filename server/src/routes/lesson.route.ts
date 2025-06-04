@@ -19,8 +19,8 @@ router.post(
 
 router.get("/class/:classId/lesson", authorize("ADMIN"), getLessons);
 
-router.get("/lesson/:lessonId", getLessonDetail);
+router.get("/lesson/:lessonId", authorize(["ADMIN", "STUDENT", "TEACHER"]), getLessonDetail);
 
-router.post("/lesson/call", makeCallValidator, makeCall);
+router.post("/lesson/call", authorize(["STUDENT", "TEACHER"]), makeCallValidator, makeCall);
 
 export default router;

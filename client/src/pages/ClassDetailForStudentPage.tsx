@@ -115,23 +115,29 @@ const ClassDetailForStudentPage = () => {
                     const exam = row.original as Exam;
 
                     if (new Date() < new Date(exam.startAt)) {
-                      return <span>Not started</span>;
+                      return <Button variant="ghost">Not started</Button>;
                     }
 
                     if (new Date() > new Date(exam.endAt)) {
                       return (
-                        <Button variant="ghost">
-                          View results
-                          <ArrowRight />
-                        </Button>
+                        <Link to={`#`}>
+                          <Button variant="ghost">
+                            View results
+                            <ArrowRight />
+                          </Button>
+                        </Link>
                       );
                     }
 
                     return (
-                      <Button variant="ghost">
-                        Go exam
-                        <ArrowRight />
-                      </Button>
+                      <Link
+                        to={`${PATH.WAITING_EXAMS}/${exam.id}`}
+                      >
+                        <Button variant="ghost">
+                          Go exam
+                          <ArrowRight />
+                        </Button>
+                      </Link>
                     );
                   },
                 },

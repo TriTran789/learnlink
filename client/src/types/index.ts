@@ -121,3 +121,27 @@ export type PayloadQuestion = {
   d: string;
   answer: "a" | "b" | "c" | "d";
 };
+
+export interface ExamToDo {
+  id: string;
+  name: string;
+  startAt: string;
+  endAt: string;
+  duration: number;
+  classId: string;
+  createdAt: string;
+  updatedAt: string;
+  questions: QuestionToDo[];
+}
+
+export interface QuestionToDo {
+  id: string;
+  content: string;
+  examId: string;
+  answers: AnswerToDo[];
+}
+
+export interface AnswerToDo {
+  id: string;
+  content: string;
+}

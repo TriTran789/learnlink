@@ -133,7 +133,7 @@ model Answer {
 
 model Result {
   id    String @id @default(uuid())
-  score Int
+  score Float
 
   examId String
   exam   Exam   @relation(fields: [examId], references: [id])

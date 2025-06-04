@@ -10,3 +10,8 @@ export const signInValidator = [
   body("password").notEmpty().withMessage("Password is required"),
   validate,
 ];
+
+export const checkFaceValidator = [
+  body("image").notEmpty().withMessage("Image is required"),
+  validate,
+];

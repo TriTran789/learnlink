@@ -16,12 +16,12 @@ const queryClient = new QueryClient({
 });
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  // <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <App />
         <Toaster richColors />
       </BrowserRouter>
     </QueryClientProvider>
-  </StrictMode>
+  // </StrictMode>
 );

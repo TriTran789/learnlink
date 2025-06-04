@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { TokenExpiredError, verify } from "jsonwebtoken";
 import { IRole, JWTPayload } from "../types";
 
-const authorize = (role: IRole) => {
+const authorize = (role: IRole | IRole[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const authHeader = req.headers.authorization;
@@ -29,7 +29,7 @@ const authorize = (role: IRole) => {
         return;
       }
 
-      if (!role.includes(decoded.role)) {
+      if (!role.includes(decoded.role) || (Array.isArray(role) && !role.includes(decoded.role))) {
         res.status(403).json({
           success: false,
           message: "Forbidden",

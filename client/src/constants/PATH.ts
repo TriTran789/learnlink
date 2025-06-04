@@ -10,6 +10,10 @@ const createPath = () => {
     SUBJECTS: `${DASHBOARD}/subjects`,
     CLASS_TECHER: `${DASHBOARD}/class-teacher`,
     CLASS_STUDENT: `${DASHBOARD}/class-student`,
+    WAITING_EXAMS: `${DASHBOARD}/waiting-exams`,
+    EXAM: `${DASHBOARD}/exam`,
+    RESULT: `${DASHBOARD}/result`,
+    ERROR_EXAM: `${DASHBOARD}/error`,
     CALL: `/call`,
   };
 };

@@ -37,3 +37,20 @@ export const createExamValidator = [
     }),
   validate,
 ];
+
+export const submitExamValidator = [
+  body().isArray().withMessage("Request body must be an array"),
+  body().notEmpty().withMessage("Request body array cannot be empty"),
+
+  body("*").custom((value) => {
+    if (Object.keys(value).length === 0) {
+      return true; // Allow empty objects
+    }
+    if (Object.keys(value).length === 1 && "answer" in value) {
+      return true; // Allow objects with only 'answer' property
+    }
+    throw new Error('Object can only contain an "answer" property or be empty');
+  }),
+
+  validate,
+];

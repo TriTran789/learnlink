@@ -15,6 +15,7 @@ import "@stream-io/video-react-sdk/dist/css/styles.css";
 import "./index.css";
 import { Loader2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
+import PATH from "@/constants/PATH";
 
 export const MyUILayout = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export const MyUILayout = () => {
 
   useEffect(() => {
     if (callingState === "left") {
-      navigate(-1);
+      navigate(PATH.DASHBOARD);
     }
   }, [callingState]);
 

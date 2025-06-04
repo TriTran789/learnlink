@@ -13,6 +13,10 @@ import ClassDetailForTeacherPage from "./pages/ClassDetailForTeacherPage";
 import LessonDetailForTeacherStudentPage from "./pages/LessonDetailForTeacherStudentPage";
 import CallPage from "./pages/CallPage";
 import ClassDetailForStudentPage from "./pages/ClassDetailForStudentPage";
+import WaitingExamPage from "./pages/WaitingExamPage";
+import DoExamPage from "./pages/DoExamPage";
+import ResultPage from "./pages/ResultPage";
+import ErrorExamPage from "./pages/ErrorExamPage";
 
 const App = () => {
   return useRoutes([
@@ -68,6 +72,22 @@ const App = () => {
           path: `${PATH.CLASS_STUDENT}/:classId`,
           element: <ClassDetailForStudentPage />,
         },
+        {
+          path: `${PATH.WAITING_EXAMS}/:examId`,
+          element: <WaitingExamPage />,
+        },
+        {
+          path: `${PATH.EXAM}/:examId`,
+          element: <DoExamPage />,
+        },
+        {
+          path: `${PATH.RESULT}/:examId`,
+          element: <ResultPage />
+        },
+        {
+          path: `${PATH.ERROR_EXAM}`,
+          element: <ErrorExamPage />
+        }
       ],
     },
     {
