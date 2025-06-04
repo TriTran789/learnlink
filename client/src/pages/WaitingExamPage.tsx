@@ -19,9 +19,8 @@ const WaitingExamPage = () => {
     try {
       // Kiểm tra xem trình duyệt có hỗ trợ API quyền không
       if ("permissions" in navigator) {
-        // @ts-ignore
         const permission = await navigator.permissions.query({
-          name: "camera",
+          name: "camera" as PermissionName,
         });
         setPermission(permission.state);
 
