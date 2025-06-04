@@ -204,7 +204,7 @@ const DoExamPage = () => {
           :{(timer % 60).toString().padStart(2, "0")}
         </div>
       </div>
-      {pendingGetExam ? (
+      {pendingGetExam || pendingSubmitExam ? (
         <Loading />
       ) : (
         <div className="p-8 max-sm:pt-56">

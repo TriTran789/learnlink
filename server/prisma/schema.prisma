@@ -39,7 +39,6 @@ model Student {
   user    User?
   classes ClassStudent[]
   results Result[]
-  studentAnswers StudentAnswer[]
 }
 
 model Teacher {
@@ -155,9 +154,6 @@ model StudentAnswer {
 
   resultId  String
   result    Result   @relation(fields: [resultId], references: [id])
-
-  studentId String
-  student   Student @relation(fields: [studentId], references: [id])
 }
 
 enum Level {

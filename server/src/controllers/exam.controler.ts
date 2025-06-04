@@ -141,7 +141,6 @@ export const submitExam = async (req: Request, res: Response) => {
             data: {
               resultId: result.id,
               answerId: answer.id,
-              studentId: profileId,
             },
           });
         }
