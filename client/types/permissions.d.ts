@@ -1,6 +1,10 @@
 // types/permissions.d.ts
-declare module "react" {
-  interface PermissionName {
-    camera: "camera";
+declare global {
+  namespace Permissions {
+    interface PermissionName {
+      camera: "camera";
+    }
   }
 }
+
+export {};
