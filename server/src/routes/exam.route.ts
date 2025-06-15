@@ -5,10 +5,13 @@ import {
   submitExamValidator,
 } from "../validators/exam.validator";
 import {
+  checkExam,
   createExam,
   getExamDetail,
+  getExamResult,
   getExams,
   getExamTodo,
+  getResultTotal,
   submitExam,
 } from "../controllers/exam.controler";
 
@@ -18,11 +21,14 @@ router.post("/exam", authorize("ADMIN"), createExamValidator, createExam);
 router.get("/exam", authorize("ADMIN"), getExams);
 router.get("/exam/:examId", authorize("ADMIN"), getExamDetail);
 router.post(
-  "/submit-exam/:examId",
+  "/submit-exam/:examId/:warning",
   authorize("STUDENT"),
   submitExamValidator,
   submitExam
 );
 router.get("/exam/:examId/todo", authorize("STUDENT"), getExamTodo);
+router.get("/exam/:examId/check", authorize("STUDENT"), checkExam);
+router.get("/exam/:examId/result", authorize("STUDENT"), getExamResult);
+router.get("/exam/:examId/result-total", authorize(["ADMIN", "TEACHER"]), getResultTotal);
 
 export default router;

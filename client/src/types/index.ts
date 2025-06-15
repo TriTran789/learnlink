@@ -84,6 +84,7 @@ export type Exam = {
   classId: string;
   createdAt: string;
   updatedAt: string;
+  questions: Question[];
 };
 
 export type ExamDetail = {
@@ -145,3 +146,18 @@ export interface AnswerToDo {
   id: string;
   content: string;
 }
+
+export type ResultStudent = {
+  examName: string;
+  score: number;
+  questions: {
+    id: string;
+    content: string;
+    answers: {
+      id: string;
+      content: string;
+      isCorrect: boolean;
+      checked: boolean;
+    }[];
+  }[];
+};

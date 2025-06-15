@@ -1,5 +1,9 @@
+import { checkExamApi } from "@/apis/exam";
+import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
 import PATH from "@/constants/PATH";
+import { useQuery } from "@tanstack/react-query";
+import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -9,6 +13,12 @@ const WaitingExamPage = () => {
   const [permission, setPermission] = useState<
     "checking" | "granted" | "denied" | "prompt"
   >("checking");
+
+  const { data, isPending } = useQuery({
+    queryKey: ["check_exam", examId],
+    enabled: !!examId,
+    queryFn: () => checkExamApi(examId as string),
+  });
 
   // Kiểm tra quyền camera khi component mount
   useEffect(() => {
@@ -65,11 +75,30 @@ const WaitingExamPage = () => {
         );
 
       case "granted":
-        return (
+        return data ? (
+          <div className="flex flex-col gap-4">
+            <div>
+              You have already taken this test, please wait until the test time
+              is up to see the results.
+            </div>
+            <div className="flex justify-center">
+              <Link to={PATH.DASHBOARD}>
+                <Button>
+                  <ArrowLeft /> Back to Dashboard
+                </Button>
+              </Link>
+            </div>
+          </div>
+        ) : (
           <Link to={`${PATH.EXAM}/${examId}`}>
             <Button>Do Exam</Button>
           </Link>
         );
+        // return (
+        //   <Link to={`${PATH.EXAM}/${examId}`}>
+        //     <Button>Do Exam</Button>
+        //   </Link>
+        // );
 
       case "denied":
         return (
@@ -102,7 +131,7 @@ const WaitingExamPage = () => {
 
   return (
     <div className="w-full flex justify-center items-center flex-col">
-      {renderContent()}
+      {isPending ? <Loading /> : renderContent()}
     </div>
   );
 };

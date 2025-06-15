@@ -133,6 +133,7 @@ model Answer {
 model Result {
   id    String @id @default(uuid())
   score Float
+  warning Int
 
   examId String
   exam   Exam   @relation(fields: [examId], references: [id])

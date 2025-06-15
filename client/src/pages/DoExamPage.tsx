@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { toast } from "sonner";
 
 const DoExamPage = () => {
   const navigate = useNavigate();
@@ -46,6 +47,10 @@ const DoExamPage = () => {
       onSuccess: () => {
         navigate(`${PATH.RESULT}/${examId}`);
       },
+      onError: (error) => {
+        navigate(PATH.ERROR_EXAM);
+        toast(error.message);
+      },
     }
   );
 
@@ -55,6 +60,7 @@ const DoExamPage = () => {
       if (warningRef.current >= 5) {
         await submitExam({
           examId: examId || "",
+          warning: warningRef.current,
           data: form.getValues() as any,
         });
       }
@@ -67,7 +73,11 @@ const DoExamPage = () => {
       return;
     }
     hasLoggedSubmit.current = true; // Set flag to true to prevent multiple submissions
-    await submitExam({ examId: examId || "", data });
+    await submitExam({
+      examId: examId || "",
+      warning: warningRef.current,
+      data,
+    });
   };
 
   // Chụp ảnh và chuyển thành base64
@@ -121,6 +131,7 @@ const DoExamPage = () => {
         hasLoggedSubmit.current = true; // Set flag to true after logging
         await submitExam({
           examId: examId || "",
+          warning: warningRef.current,
           data: form.getValues() as any,
         });
       }
@@ -131,6 +142,7 @@ const DoExamPage = () => {
         hasLoggedSubmit.current = true;
         await submitExam({
           examId: examId || "",
+          warning: warningRef.current,
           data: form.getValues() as any,
         });
       }
@@ -172,6 +184,7 @@ const DoExamPage = () => {
     if (timer <= 0) {
       submitExam({
         examId: examId || "",
+        warning: warningRef.current,
         data: form.getValues() as any,
       });
       return;

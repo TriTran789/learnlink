@@ -17,6 +17,7 @@ import WaitingExamPage from "./pages/WaitingExamPage";
 import DoExamPage from "./pages/DoExamPage";
 import ResultPage from "./pages/ResultPage";
 import ErrorExamPage from "./pages/ErrorExamPage";
+import ResultTotalPage from "./pages/ResultTotalPage";
 
 const App = () => {
   return useRoutes([
@@ -82,12 +83,16 @@ const App = () => {
         },
         {
           path: `${PATH.RESULT}/:examId`,
-          element: <ResultPage />
+          element: <ResultPage />,
         },
         {
           path: `${PATH.ERROR_EXAM}`,
-          element: <ErrorExamPage />
-        }
+          element: <ErrorExamPage />,
+        },
+        {
+          path: `${PATH.RESULT_TOTAL}/:examId`,
+          element: <ResultTotalPage />,
+        },
       ],
     },
     {

@@ -4,13 +4,16 @@ import CreateQuestionForm from "@/components/CreateQuestionForm";
 import Loading from "@/components/Loading";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import PATH from "@/constants/PATH";
 import ContentLayout from "@/layouts/ContentLayout";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { X } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 const ExamDetailPage = () => {
+  const navigate = useNavigate();
   const { classId, examId } = useParams();
 
   const {
@@ -33,6 +36,12 @@ const ExamDetailPage = () => {
       toast.error(error.message);
     },
   });
+
+  useEffect(() => {
+    if (exam?.endAt && new Date() > new Date(exam.endAt)) {
+      navigate(`${PATH.RESULT_TOTAL}/${examId}`);
+    }
+  }, [exam?.endAt]);
 
   if (isPending) {
     return <Loading />;

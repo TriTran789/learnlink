@@ -120,7 +120,7 @@ const ClassDetailForStudentPage = () => {
 
                     if (new Date() > new Date(exam.endAt)) {
                       return (
-                        <Link to={`#`}>
+                        <Link to={`${PATH.RESULT}/${exam.id}`}>
                           <Button variant="ghost">
                             View results
                             <ArrowRight />
@@ -130,9 +130,7 @@ const ClassDetailForStudentPage = () => {
                     }
 
                     return (
-                      <Link
-                        to={`${PATH.WAITING_EXAMS}/${exam.id}`}
-                      >
+                      <Link to={`${PATH.WAITING_EXAMS}/${exam.id}`}>
                         <Button variant="ghost">
                           Go exam
                           <ArrowRight />
