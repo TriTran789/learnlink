@@ -106,12 +106,29 @@ export const deleteTeacher = async (req: Request, res: Response) => {
       where: {
         id,
       },
+      include: {
+        teacher: true,
+      },
     });
 
     if (!user) {
       res.status(404).json({
         success: false,
         message: "User not found",
+      });
+      return;
+    }
+
+    const classes = await prisma.class.findMany({
+      where: {
+        teacherId: user.teacher?.id,
+      },
+    });
+
+    if (classes.length > 0) {
+      res.status(400).json({
+        success: false,
+        message: "Cannot delete teacher with existing classes",
       });
       return;
     }
@@ -142,7 +159,7 @@ export const deleteTeacher = async (req: Request, res: Response) => {
   }
 };
 
-export const updateTeacher = async (req: Request, res: Response) => { 
+export const updateTeacher = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { fullName, level, phone } = req.body;

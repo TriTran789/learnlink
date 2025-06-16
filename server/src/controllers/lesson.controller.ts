@@ -136,3 +136,21 @@ export const makeCall = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getRecord = async (req: Request, res: Response) => {
+  try {
+    const { lessonId } = req.params;
+
+    const records = streamClient.video.call("default", lessonId);
+
+    const data = await records.listRecordings();
+
+    res.status(200).json({
+      message: "Lesson records retrieved successfully",
+      data,
+    });
+  } catch (error) {
+    console.error("Error retrieving lesson records:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

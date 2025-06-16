@@ -53,3 +53,23 @@ export const getCallApi = async (payload: {
     throw new Error(error.response.data.message);
   }
 };
+
+export const getRecordApi = async (
+  lessonId: string
+): Promise<
+  {
+    filename: string;
+    url: string;
+    start_time: string;
+    end_time: string;
+    session_id: string;
+  }[]
+> => {
+  try {
+    const response = await api.get(`/lesson/${lessonId}/record`);
+    return response.data.data.recordings;
+  } catch (error: any) {
+    console.error("Error fetching lesson record:", error);
+    throw new Error(error.response.data.message);
+  }
+};

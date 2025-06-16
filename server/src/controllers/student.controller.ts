@@ -105,6 +105,19 @@ export const deleteStudent = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
+    const classStudents = await prisma.classStudent.findMany({
+      where: {
+        studentId: id,
+      },
+    });
+
+    if (classStudents.length > 0) {
+      res.status(400).json({
+        message: "Cannot delete student who is enrolled in a class",
+      });
+      return;
+    }
+
     const student = await prisma.student.findUnique({
       where: {
         id: id,

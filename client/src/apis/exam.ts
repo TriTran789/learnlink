@@ -47,7 +47,10 @@ export const submitExamApi = async ({
   data: { questions: { answer?: string }[] };
 }) => {
   try {
-    const response = await api.post(`/submit-exam/${examId}/${warning}`, data.questions);
+    const response = await api.post(
+      `/submit-exam/${examId}/${warning}`,
+      data.questions
+    );
     return response.data;
   } catch (error: any) {
     console.log(error);
@@ -88,7 +91,17 @@ export const getExamResultApi = async (
   }
 };
 
-export const getResultTotalApi = async (examId: string) => {
+export const getResultTotalApi = async (
+  examId: string
+): Promise<
+  {
+    name: string;
+    phone: string;
+    score: number;
+    status: string;
+    warning: number;
+  }[]
+> => {
   try {
     const response = await api.get(`/exam/${examId}/result-total`);
     return response.data.data;

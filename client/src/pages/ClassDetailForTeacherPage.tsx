@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import PATH from "@/constants/PATH";
 import ContentLayout from "@/layouts/ContentLayout";
 import { decodeAccesstoken } from "@/lib/utils";
-import { Lesson, Student } from "@/types";
+import { Exam, Lesson, Student } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowRight } from "lucide-react";
@@ -118,6 +118,57 @@ const ClassDetailForTeacherPage = () => {
           }
           data={data?.students || []}
           hiddenSearch
+        />
+      )}
+      {page === "exams" && (
+        <DataTable
+          keyFilter="name"
+          data={data?.exams || []}
+          columns={
+            [
+              {
+                accessorKey: "name",
+                header: "Name",
+              },
+              {
+                accessorKey: "startAt",
+                header: "Start At",
+                cell: ({ row }) => {
+                  const date = new Date(row.getValue("startAt"));
+                  return date.toLocaleString();
+                },
+              },
+              {
+                accessorKey: "endAt",
+                header: "End At",
+                cell: ({ row }) => {
+                  const date = new Date(row.getValue("endAt"));
+                  return date.toLocaleString();
+                },
+              },
+              {
+                id: "action",
+                header: "Action",
+                cell: ({ row }) => {
+                  const exam = row.original as Exam;
+                  return (
+                    <>
+                      {new Date(exam.endAt) > new Date() ? (
+                        <p>Exam is ongoing.</p>
+                      ) : (
+                        <Link to={`${PATH.RESULT_TOTAL}/${exam.id}`}>
+                          <Button variant="ghost">
+                            View Result
+                            <ArrowRight />
+                          </Button>
+                        </Link>
+                      )}
+                    </>
+                  );
+                },
+              },
+            ] as ColumnDef<Exam>[]
+          }
         />
       )}
     </ContentLayout>

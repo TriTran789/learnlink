@@ -1,9 +1,10 @@
-import { getLessonDetailApi } from "@/apis/lesson";
+import { getLessonDetailApi, getRecordApi } from "@/apis/lesson";
 import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
 import PATH from "@/constants/PATH";
 import ContentLayout from "@/layouts/ContentLayout";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
 const LessonDetailForTeacherStudentPage = () => {
@@ -16,6 +17,20 @@ const LessonDetailForTeacherStudentPage = () => {
     queryKey: ["lessonDetail", lessonId],
     queryFn: () => getLessonDetailApi(lessonId as string),
   });
+
+  const {
+    mutate,
+    isPending: pendingGetRecord,
+    data: records,
+  } = useMutation({
+    mutationFn: getRecordApi,
+  });
+
+  useEffect(() => {
+    if (data?.endAt && new Date() > new Date(data.endAt)) {
+      mutate(lessonId as string);
+    }
+  }, [data?.endAt]);
 
   if (isPending) {
     return <Loading />;
@@ -34,9 +49,22 @@ const LessonDetailForTeacherStudentPage = () => {
             new Date() < new Date(data.endAt) &&
             new Date() > new Date(data.startAt) &&
             "The class is ongoing"}
-          {data?.endAt &&
-            new Date() > new Date(data.endAt) &&
-            "The class has ended"}
+          {data?.endAt && new Date() > new Date(data.endAt) && (
+            <div className="flex flex-col gap-4">
+              <p>The class has ended</p>
+              <div className="flex flex-col gap-4">
+                {pendingGetRecord ? (
+                  <Loading />
+                ) : (
+                  <div>
+                    {records?.map((record) => (
+                      <video src={record.url} controls />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </p>
         {data?.startAt &&
           data?.endAt &&
