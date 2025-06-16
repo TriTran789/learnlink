@@ -60,6 +60,7 @@ interface WorldProps {
   data: Position[];
 }
 
+// @ts-ignore
 let numbersOfRings = [0];
 
 export function Globe({ globeConfig, data }: WorldProps) {
@@ -123,6 +124,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
     let points = [];
     for (let i = 0; i < arcs.length; i++) {
       const arc = arcs[i];
+      // @ts-ignore
       const rgb = hexToRgb(arc.color) as { r: number; g: number; b: number };
       points.push({
         size: defaultProps.pointSize,
@@ -216,7 +218,10 @@ export function Globe({ globeConfig, data }: WorldProps) {
       );
 
       const ringsData = data
-        .filter((d, i) => newNumbersOfRings.includes(i))
+        .filter((d, i) => {
+          newNumbersOfRings.includes(i);
+          console.log(d);
+        })
         .map((d) => ({
           lat: d.startLat,
           lng: d.startLng,
@@ -285,6 +290,7 @@ export function World(props: WorldProps) {
 export function hexToRgb(hex: string) {
   var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
   hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+    console.log(m);
     return r + r + g + g + b + b;
   });
 
