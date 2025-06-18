@@ -40,7 +40,7 @@ const SignInPage = () => {
     onSuccess: (data) => {
       toast.success(data.message);
       localStorage.setItem("accessToken", data.accessToken);
-      navigate(PATH.HOME);
+      navigate(PATH.DASHBOARD);
     },
     onError: (error) => {
       toast.error(error.message);

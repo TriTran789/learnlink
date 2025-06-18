@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
-import { compareSync } from "bcryptjs";
+import { compareSync, genSaltSync, hashSync } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 import { JWTPayload } from "../types";
 import { base64ToImageAsync, loadImageFromCloudinary } from "../utils";
@@ -184,7 +184,8 @@ export const checkFace = async (req: Request, res: Response) => {
     // Tính khoảng cách Euclidean
     const distance = faceapi.euclideanDistance(descriptor1, descriptor2);
 
-    if (distance > 0.5) { // Threshold for face matching
+    if (distance > 0.5) {
+      // Threshold for face matching
       res.status(400).json({
         success: false,
         message: "Face check failed",
@@ -196,6 +197,57 @@ export const checkFace = async (req: Request, res: Response) => {
       success: true,
       message: "Face check successful",
       data: distance, // Placeholder for actual face matching logic
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+export const changePassword = async (req: Request, res: Response) => {
+  try {
+    const { old_password, new_password } = req.body;
+    const { id } = req.user as JWTPayload;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+      return;
+    }
+
+    const isMatchedPassword = compareSync(old_password, user.password);
+
+    if (!isMatchedPassword) {
+      res.status(400).json({
+        success: false,
+        message: "Old password is incorrect",
+      });
+      return;
+    }
+
+    const hashedPassword = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        password: hashSync(new_password, genSaltSync(10)), // Assume hashing is done in the Prisma model
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
     });
   } catch (error) {
     console.error(error);

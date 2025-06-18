@@ -15,6 +15,7 @@ const createPath = () => {
     RESULT: `${DASHBOARD}/result`,
     ERROR_EXAM: `${DASHBOARD}/error`,
     RESULT_TOTAL: `${DASHBOARD}/result-total`,
+    CHANGE_PASSWORD: `${DASHBOARD}/change-password`,
     CALL: `/call`,
   };
 };

@@ -140,8 +140,8 @@ const MySidebar = () => {
         <div>
           <SidebarLink
             link={{
-              label: "Manu Arora",
-              href: "#",
+              label: "Change Password",
+              href: PATH.CHANGE_PASSWORD,
               icon: <CircleUserRound size={20} />,
             }}
           />

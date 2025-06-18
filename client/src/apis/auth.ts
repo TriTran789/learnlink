@@ -62,3 +62,17 @@ export const CheckFaceApi = async (base64Image: string) => {
     throw new Error(error.response.data.message);
   }
 };
+
+export const changePasswordApi = async (payload: {
+  old_password: string;
+  new_password: string;
+  confirm_password: string;
+}) => {
+  try {
+    const response = await api.post("/change-password", payload);
+    return response.data;
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.response.data.message);
+  }
+};

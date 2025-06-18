@@ -18,6 +18,8 @@ import DoExamPage from "./pages/DoExamPage";
 import ResultPage from "./pages/ResultPage";
 import ErrorExamPage from "./pages/ErrorExamPage";
 import ResultTotalPage from "./pages/ResultTotalPage";
+import DashboardPage from "./pages/DashboardPage";
+import ChangePasswordPage from "./components/ChangePasswordPage";
 
 const App = () => {
   return useRoutes([
@@ -35,7 +37,7 @@ const App = () => {
       children: [
         {
           index: true,
-          element: <div>Dashboard Home</div>,
+          element: <DashboardPage />,
         },
         {
           path: PATH.TEACHERS,
@@ -93,6 +95,10 @@ const App = () => {
           path: `${PATH.RESULT_TOTAL}/:examId`,
           element: <ResultTotalPage />,
         },
+        {
+          path: PATH.CHANGE_PASSWORD,
+          element: <ChangePasswordPage />,
+        }
       ],
     },
     {
